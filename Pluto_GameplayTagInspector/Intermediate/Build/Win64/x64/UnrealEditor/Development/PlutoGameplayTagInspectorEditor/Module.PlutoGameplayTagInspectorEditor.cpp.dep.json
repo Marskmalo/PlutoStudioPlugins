@@ -1,0 +1,19 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\plutogameplaytaginspectoreditor\\module.plutogameplaytaginspectoreditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\d_epic_ue\\unreal project\\sod\\intermediate\\build\\win64\\x64\\sodeditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\plutogameplaytaginspectoreditor\\definitions.plutogameplaytaginspectoreditor.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\intermediate\\build\\win64\\unrealeditor\\inc\\plutogameplaytaginspectoreditor\\uht\\plutogameplaytaginspectoreditor.init.gen.cpp",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\intermediate\\build\\win64\\unrealeditor\\inc\\plutogameplaytaginspectoreditor\\uht\\plutogameplaytaginspectoreditorsettings.gen.cpp",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\source\\plutogameplaytaginspectoreditor\\public\\plutogameplaytaginspectoreditorsettings.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\intermediate\\build\\win64\\unrealeditor\\inc\\plutogameplaytaginspectoreditor\\uht\\plutogameplaytaginspectoreditorsettings.generated.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\plutogameplaytaginspectoreditor\\permoduleinline.gen.cpp",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\core\\public\\hal\\permoduleinline.inl"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

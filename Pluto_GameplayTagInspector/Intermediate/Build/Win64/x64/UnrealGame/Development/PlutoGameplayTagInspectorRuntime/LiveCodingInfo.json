@@ -1,0 +1,13 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.PlutoGameplayTagInspectorRuntime.cpp.obj": [
+			"PlutoGameplayTagContainerProvider.gen.cpp.obj",
+			"PlutoGameplayTagInspectorBlueprintLibrary.gen.cpp.obj",
+			"PlutoGameplayTagInspectorRuntime.init.gen.cpp.obj",
+			"PlutoGameplayTagInspectorBlueprintLibrary.cpp.obj",
+			"PlutoGameplayTagInspectorRuntimeModule.cpp.obj",
+			"PlutoGameplayTagInspectorRuntimeUtils.cpp.obj"
+		]
+	}
+}

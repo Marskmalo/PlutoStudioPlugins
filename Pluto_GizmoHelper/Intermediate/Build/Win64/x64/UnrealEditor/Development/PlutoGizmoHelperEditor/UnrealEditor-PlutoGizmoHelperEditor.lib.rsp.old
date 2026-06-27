@@ -1,0 +1,15 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-PlutoGizmoHelperEditor.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:/D_Epic_UE/Unreal Project/SOD/Intermediate/Build/Win64/x64/SODEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_GizmoHelper/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoGizmoHelperEditor/Module.PlutoGizmoHelperEditor.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_GizmoHelper/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoGizmoHelperEditor/PlutoCollisionGizmoDetails.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_GizmoHelper/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoGizmoHelperEditor/PlutoGizmoHelperEditorModule.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_GizmoHelper/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoGizmoHelperEditor/PlutoGizmoHelperEditorSettings.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_GizmoHelper/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoGizmoHelperEditor/Default.rc2.res"
+/OUT:"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_GizmoHelper/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoGizmoHelperEditor/UnrealEditor-PlutoGizmoHelperEditor.lib"

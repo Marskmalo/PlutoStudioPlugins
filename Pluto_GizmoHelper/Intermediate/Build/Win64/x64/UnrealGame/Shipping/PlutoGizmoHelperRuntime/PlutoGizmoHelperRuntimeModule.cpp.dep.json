@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\source\\plutogizmohelperruntime\\private\\plutogizmohelperruntimemodule.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\d_epic_ue\\unreal project\\sod\\intermediate\\build\\win64\\x64\\sod\\shipping\\engine\\sharedpch.engine.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\intermediate\\build\\win64\\x64\\unrealgame\\shipping\\plutogizmohelperruntime\\definitions.plutogizmohelperruntime.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\source\\plutogizmohelperruntime\\public\\plutogizmohelperruntimemodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

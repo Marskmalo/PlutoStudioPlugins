@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_splinehelper\\source\\plutosplinehelpereditor\\private\\plutosplinehelpereditorsettings.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\d_epic_ue\\unreal project\\sod\\intermediate\\build\\win64\\x64\\sodeditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_splinehelper\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\plutosplinehelpereditor\\definitions.plutosplinehelpereditor.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_splinehelper\\source\\plutosplinehelpereditor\\public\\plutosplinehelpereditorsettings.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_splinehelper\\intermediate\\build\\win64\\unrealeditor\\inc\\plutosplinehelpereditor\\uht\\plutosplinehelpereditorsettings.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

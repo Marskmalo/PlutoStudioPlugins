@@ -1,0 +1,12 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.PlutoFunctionLibrary.cpp.obj": [
+			"PlutoFunctionLibrary.init.gen.cpp.obj",
+			"PlutoGameplayTagFunctionLibrary.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj",
+			"PlutoFunctionLibraryModule.cpp.obj",
+			"PlutoGameplayTagFunctionLibrary.cpp.obj"
+		]
+	}
+}

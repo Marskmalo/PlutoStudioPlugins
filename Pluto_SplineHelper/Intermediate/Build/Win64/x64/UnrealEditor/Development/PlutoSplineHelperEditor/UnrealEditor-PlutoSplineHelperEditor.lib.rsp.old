@@ -1,0 +1,15 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-PlutoSplineHelperEditor.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:/D_Epic_UE/Unreal Project/SOD/Intermediate/Build/Win64/x64/SODEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_SplineHelper/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoSplineHelperEditor/Module.PlutoSplineHelperEditor.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_SplineHelper/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoSplineHelperEditor/PlutoSplineHelperEditorModule.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_SplineHelper/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoSplineHelperEditor/PlutoSplineHelperEditorSettings.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_SplineHelper/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoSplineHelperEditor/PlutoSplineWallDetails.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_SplineHelper/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoSplineHelperEditor/Default.rc2.res"
+/OUT:"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_SplineHelper/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoSplineHelperEditor/UnrealEditor-PlutoSplineHelperEditor.lib"

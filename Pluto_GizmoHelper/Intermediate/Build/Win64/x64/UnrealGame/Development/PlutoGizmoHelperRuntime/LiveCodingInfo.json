@@ -1,0 +1,14 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.PlutoGizmoHelperRuntime.cpp.obj": [
+			"PlutoCollisionGizmoComponent.gen.cpp.obj",
+			"PlutoCollisionGizmoTypes.gen.cpp.obj",
+			"PlutoGizmoHelperRuntime.init.gen.cpp.obj",
+			"PlutoGizmoHelperSettings.gen.cpp.obj",
+			"PlutoCollisionGizmoComponent.cpp.obj",
+			"PlutoGizmoHelperRuntimeModule.cpp.obj",
+			"PlutoGizmoHelperSettings.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_splinehelper\\source\\plutosplinehelperruntime\\private\\plutosplinehelperruntimemodule.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\d_epic_ue\\unreal project\\sod\\intermediate\\build\\win64\\x64\\sod\\development\\engine\\sharedpch.engine.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_splinehelper\\intermediate\\build\\win64\\x64\\unrealgame\\development\\plutosplinehelperruntime\\definitions.plutosplinehelperruntime.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_splinehelper\\source\\plutosplinehelperruntime\\public\\plutosplinehelperruntimemodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

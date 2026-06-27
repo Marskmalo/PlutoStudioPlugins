@@ -1,0 +1,32 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\source\\plutogameplaytaginspectoreditor\\private\\plutogameplaytaginspectoreditormodule.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\d_epic_ue\\unreal project\\sod\\intermediate\\build\\win64\\x64\\sodeditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\plutogameplaytaginspectoreditor\\definitions.plutogameplaytaginspectoreditor.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\source\\plutogameplaytaginspectoreditor\\public\\plutogameplaytaginspectoreditormodule.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\projects\\public\\interfaces\\ipluginmanager.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\projects\\public\\plugindescriptor.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\projects\\public\\custombuildsteps.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\projects\\public\\localizationdescriptor.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\projects\\public\\moduledescriptor.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\projects\\public\\plugindisalloweddescriptor.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\projects\\public\\pluginreferencedescriptor.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\projects\\public\\versescope.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\source\\plutogameplaytaginspectoreditor\\public\\plutogameplaytaginspectoreditorsettings.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\intermediate\\build\\win64\\unrealeditor\\inc\\plutogameplaytaginspectoreditor\\uht\\plutogameplaytaginspectoreditorsettings.generated.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\source\\plutogameplaytaginspectoreditor\\private\\splutogameplaytaginspectordocumentationpanel.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\source\\plutogameplaytaginspectoreditor\\private\\splutogameplaytaginspectorpanel.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\gameplaytags\\classes\\gameplaytagcontainer.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\core\\public\\misc\\comparisonutility.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\gameplaytags\\uht\\gameplaytagcontainer.generated.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\source\\plutogameplaytaginspectorruntime\\public\\plutogameplaytagcontainerprovider.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\intermediate\\build\\win64\\unrealeditor\\inc\\plutogameplaytaginspectorruntime\\uht\\plutogameplaytagcontainerprovider.generated.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\slatecore\\public\\styling\\slatestyleregistry.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

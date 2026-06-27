@@ -1,0 +1,15 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.PlutoSplineHelperRuntime.cpp.obj": [
+			"PlutoSplineHelperRuntime.init.gen.cpp.obj",
+			"PlutoSplineWallActor.gen.cpp.obj",
+			"PlutoSplineWallSplineComponent.gen.cpp.obj",
+			"PlutoSplineWallTypes.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj",
+			"PlutoSplineHelperRuntimeModule.cpp.obj",
+			"PlutoSplineWallSplineComponent.cpp.obj",
+			"PlutoSplineWallActor.cpp.obj"
+		]
+	}
+}

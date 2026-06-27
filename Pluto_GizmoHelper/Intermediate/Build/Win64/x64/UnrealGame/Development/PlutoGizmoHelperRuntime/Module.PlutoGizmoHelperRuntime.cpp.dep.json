@@ -1,0 +1,36 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\intermediate\\build\\win64\\x64\\unrealgame\\development\\plutogizmohelperruntime\\module.plutogizmohelperruntime.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\d_epic_ue\\unreal project\\sod\\intermediate\\build\\win64\\x64\\sod\\development\\engine\\sharedpch.engine.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\intermediate\\build\\win64\\x64\\unrealgame\\development\\plutogizmohelperruntime\\definitions.plutogizmohelperruntime.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\intermediate\\build\\win64\\unrealgame\\inc\\plutogizmohelperruntime\\uht\\plutocollisiongizmocomponent.gen.cpp",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\source\\plutogizmohelperruntime\\public\\plutocollisiongizmocomponent.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\source\\plutogizmohelperruntime\\public\\plutocollisiongizmotypes.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\intermediate\\build\\win64\\unrealgame\\inc\\plutogizmohelperruntime\\uht\\plutocollisiongizmotypes.generated.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\intermediate\\build\\win64\\unrealgame\\inc\\plutogizmohelperruntime\\uht\\plutocollisiongizmocomponent.generated.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\intermediate\\build\\win64\\unrealgame\\inc\\plutogizmohelperruntime\\uht\\plutocollisiongizmotypes.gen.cpp",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\intermediate\\build\\win64\\unrealgame\\inc\\plutogizmohelperruntime\\uht\\plutogizmohelperruntime.init.gen.cpp",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\intermediate\\build\\win64\\unrealgame\\inc\\plutogizmohelperruntime\\uht\\plutogizmohelpersettings.gen.cpp",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\source\\plutogizmohelperruntime\\public\\plutogizmohelpersettings.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\intermediate\\build\\win64\\unrealgame\\inc\\plutogizmohelperruntime\\uht\\plutogizmohelpersettings.generated.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\source\\plutogizmohelperruntime\\private\\plutocollisiongizmocomponent.cpp",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\engine\\classes\\components\\boxcomponent.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\engine\\classes\\components\\shapecomponent.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\intermediate\\build\\win64\\unrealgame\\inc\\engine\\uht\\shapecomponent.generated.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\intermediate\\build\\win64\\unrealgame\\inc\\engine\\uht\\boxcomponent.generated.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\engine\\classes\\components\\capsulecomponent.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\intermediate\\build\\win64\\unrealgame\\inc\\engine\\uht\\capsulecomponent.generated.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\engine\\classes\\components\\spherecomponent.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\intermediate\\build\\win64\\unrealgame\\inc\\engine\\uht\\spherecomponent.generated.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\engine\\public\\materials\\materialrenderproxy.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\source\\plutogizmohelperruntime\\private\\plutogizmohelperruntimemodule.cpp",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\source\\plutogizmohelperruntime\\public\\plutogizmohelperruntimemodule.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\pluto_gizmohelper\\source\\plutogizmohelperruntime\\private\\plutogizmohelpersettings.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

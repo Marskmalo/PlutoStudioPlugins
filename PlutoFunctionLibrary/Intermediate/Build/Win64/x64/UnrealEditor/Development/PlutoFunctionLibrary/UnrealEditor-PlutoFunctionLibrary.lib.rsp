@@ -1,0 +1,14 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-PlutoFunctionLibrary.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:/D_Epic_UE/Unreal Project/SOD/Intermediate/Build/Win64/x64/SODEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoStudio/PlutoFunctionLibrary/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoFunctionLibrary/Module.PlutoFunctionLibrary.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoStudio/PlutoFunctionLibrary/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoFunctionLibrary/PlutoFunctionLibraryModule.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoStudio/PlutoFunctionLibrary/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoFunctionLibrary/PlutoGameplayTagFunctionLibrary.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoStudio/PlutoFunctionLibrary/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoFunctionLibrary/Default.rc2.res"
+/OUT:"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoStudio/PlutoFunctionLibrary/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoFunctionLibrary/UnrealEditor-PlutoFunctionLibrary.lib"

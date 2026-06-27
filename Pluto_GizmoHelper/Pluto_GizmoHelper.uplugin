@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "0.1.0",
+	"FriendlyName": "Pluto Gizmo Helper",
+	"Description": "Configurable collision gizmos for editor, PIE, and development builds.",
+	"Category": "Tools",
+	"CreatedBy": "PLUTO STUDIO",
+	"CanContainContent": false,
+	"IsBetaVersion": true,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "PlutoGizmoHelperRuntime",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "PlutoGizmoHelperEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}

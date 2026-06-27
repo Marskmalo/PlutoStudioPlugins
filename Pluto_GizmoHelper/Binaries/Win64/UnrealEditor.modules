@@ -1,0 +1,8 @@
+{
+	"BuildId": "47537391",
+	"Modules": 
+	{
+		"PlutoGizmoHelperEditor": "UnrealEditor-PlutoGizmoHelperEditor.dll",
+		"PlutoGizmoHelperRuntime": "UnrealEditor-PlutoGizmoHelperRuntime.dll"
+	}
+}

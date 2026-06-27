@@ -1,0 +1,13 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.PlutoSplineHelperEditor.cpp.obj": [
+			"PlutoSplineHelperEditor.init.gen.cpp.obj",
+			"PlutoSplineHelperEditorSettings.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj",
+			"PlutoSplineHelperEditorModule.cpp.obj",
+			"PlutoSplineHelperEditorSettings.cpp.obj",
+			"PlutoSplineWallDetails.cpp.obj"
+		]
+	}
+}

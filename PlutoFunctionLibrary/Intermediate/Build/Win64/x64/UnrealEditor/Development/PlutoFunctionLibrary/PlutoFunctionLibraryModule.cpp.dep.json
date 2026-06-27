@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\plutofunctionlibrary\\source\\plutofunctionlibrary\\private\\plutofunctionlibrarymodule.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\d_epic_ue\\unreal project\\sod\\intermediate\\build\\win64\\x64\\sodeditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\plutofunctionlibrary\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\plutofunctionlibrary\\definitions.plutofunctionlibrary.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\plutofunctionlibrary\\source\\plutofunctionlibrary\\public\\plutofunctionlibrarymodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutofunctionlibrary\\intermediate\\build\\win64\\x64\\unrealgame\\development\\plutofunctionlibrary\\module.plutofunctionlibrary.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\d_epic_ue\\unreal project\\sod\\intermediate\\build\\win64\\x64\\sod\\development\\engine\\sharedpch.engine.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutofunctionlibrary\\intermediate\\build\\win64\\x64\\unrealgame\\development\\plutofunctionlibrary\\definitions.plutofunctionlibrary.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutofunctionlibrary\\intermediate\\build\\win64\\unrealgame\\inc\\plutofunctionlibrary\\uht\\plutofunctionlibrary.init.gen.cpp",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutofunctionlibrary\\intermediate\\build\\win64\\unrealgame\\inc\\plutofunctionlibrary\\uht\\plutogameplaytagfunctionlibrary.gen.cpp",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutofunctionlibrary\\source\\plutofunctionlibrary\\public\\plutogameplaytagfunctionlibrary.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\gameplaytags\\classes\\gameplaytagcontainer.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\source\\runtime\\core\\public\\misc\\comparisonutility.h",
+            "d:\\d_epic_ue\\unreal engine\\ue_5.7\\engine\\intermediate\\build\\win64\\unrealgame\\inc\\gameplaytags\\uht\\gameplaytagcontainer.generated.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutofunctionlibrary\\intermediate\\build\\win64\\unrealgame\\inc\\plutofunctionlibrary\\uht\\plutogameplaytagfunctionlibrary.generated.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutofunctionlibrary\\source\\plutofunctionlibrary\\private\\plutofunctionlibrarymodule.cpp",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutofunctionlibrary\\source\\plutofunctionlibrary\\public\\plutofunctionlibrarymodule.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutofunctionlibrary\\source\\plutofunctionlibrary\\private\\plutogameplaytagfunctionlibrary.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

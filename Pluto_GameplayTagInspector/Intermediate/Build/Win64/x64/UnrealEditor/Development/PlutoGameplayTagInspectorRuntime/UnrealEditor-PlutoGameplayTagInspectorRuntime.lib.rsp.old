@@ -1,0 +1,15 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-PlutoGameplayTagInspectorRuntime.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:/D_Epic_UE/Unreal Project/SOD/Intermediate/Build/Win64/x64/SODEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_GameplayTagInspector/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoGameplayTagInspectorRuntime/Module.PlutoGameplayTagInspectorRuntime.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_GameplayTagInspector/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoGameplayTagInspectorRuntime/PlutoGameplayTagInspectorBlueprintLibrary.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_GameplayTagInspector/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoGameplayTagInspectorRuntime/PlutoGameplayTagInspectorRuntimeModule.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_GameplayTagInspector/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoGameplayTagInspectorRuntime/PlutoGameplayTagInspectorRuntimeUtils.cpp.obj"
+"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_GameplayTagInspector/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoGameplayTagInspectorRuntime/Default.rc2.res"
+/OUT:"D:/D_Epic_UE/Unreal Project/SOD/Plugins/PlutoPlugins/Pluto_GameplayTagInspector/Intermediate/Build/Win64/x64/UnrealEditor/Development/PlutoGameplayTagInspectorRuntime/UnrealEditor-PlutoGameplayTagInspectorRuntime.lib"

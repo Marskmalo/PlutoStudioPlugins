@@ -1,0 +1,8 @@
+{
+	"BuildId": "47537391",
+	"Modules": 
+	{
+		"PlutoSplineHelperEditor": "UnrealEditor-PlutoSplineHelperEditor.dll",
+		"PlutoSplineHelperRuntime": "UnrealEditor-PlutoSplineHelperRuntime.dll"
+	}
+}

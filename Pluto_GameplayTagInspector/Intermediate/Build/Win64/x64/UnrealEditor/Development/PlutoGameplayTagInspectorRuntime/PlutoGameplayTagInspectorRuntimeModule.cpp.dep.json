@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\source\\plutogameplaytaginspectorruntime\\private\\plutogameplaytaginspectorruntimemodule.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\d_epic_ue\\unreal project\\sod\\intermediate\\build\\win64\\x64\\sodeditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\plutogameplaytaginspectorruntime\\definitions.plutogameplaytaginspectorruntime.h",
+            "d:\\d_epic_ue\\unreal project\\sod\\plugins\\plutostudio\\pluto_gameplaytaginspector\\source\\plutogameplaytaginspectorruntime\\public\\plutogameplaytaginspectorruntimemodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

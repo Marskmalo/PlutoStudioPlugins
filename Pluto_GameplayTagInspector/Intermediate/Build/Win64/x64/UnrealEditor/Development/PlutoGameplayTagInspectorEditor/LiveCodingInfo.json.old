@@ -1,0 +1,13 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.PlutoGameplayTagInspectorEditor.cpp.obj": [
+			"PlutoGameplayTagInspectorEditor.init.gen.cpp.obj",
+			"PlutoGameplayTagInspectorEditorSettings.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj",
+			"PlutoGameplayTagInspectorEditorModule.cpp.obj",
+			"PlutoGameplayTagInspectorEditorSettings.cpp.obj",
+			"SPlutoGameplayTagInspectorPanel.cpp.obj"
+		]
+	}
+}

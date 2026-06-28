@@ -97,6 +97,7 @@ private:
 	FReply HandleRefreshClicked();
 	FReply HandleLockClicked();
 	FReply HandleLanguageClicked();
+	void HandleFocusClicked();
 	FReply HandleDocumentationClicked();
 	TSharedRef<SWidget> BuildTreeColumnWidget(FTreeNodePtr Item) const;
 	TSharedRef<SWidget> BuildSourceColumnWidget(FTreeNodePtr Item) const;

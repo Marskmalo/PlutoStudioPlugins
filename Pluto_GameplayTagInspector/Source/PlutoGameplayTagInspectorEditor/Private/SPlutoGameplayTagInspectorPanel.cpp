@@ -152,6 +152,19 @@ void SPlutoGameplayTagInspectorPanel::Construct(const FArguments& InArgs)
 				+ SHorizontalBox::Slot()
 				.AutoWidth()
 				.VAlign(VAlign_Center)
+				.Padding(0.0f, 0.0f, 8.0f, 0.0f)
+				[
+					SNew(SButton)
+					.Text(this, &SPlutoGameplayTagInspectorPanel::BuildLanguageButtonText)
+					.ToolTipText_Lambda([]()
+					{
+						return MakePanelText(TEXT("切换中英文界面。"), TEXT("Toggle the UI language between Chinese and English."));
+					})
+					.OnClicked(this, &SPlutoGameplayTagInspectorPanel::HandleLanguageClicked)
+				]
+				+ SHorizontalBox::Slot()
+				.AutoWidth()
+				.VAlign(VAlign_Center)
 				[
 					SNew(SButton)
 					.ButtonStyle(FAppStyle::Get(), "SimpleButton")
@@ -183,7 +196,8 @@ void SPlutoGameplayTagInspectorPanel::Construct(const FArguments& InArgs)
 					.ObjectPath(this, &SPlutoGameplayTagInspectorPanel::GetObservedActorObjectPath)
 					.OnObjectChanged(this, &SPlutoGameplayTagInspectorPanel::HandleObservedActorChanged)
 					.OnShouldFilterActor(this, &SPlutoGameplayTagInspectorPanel::IsObservedActorAllowed)
-					.DisplayBrowse(false)
+					.DisplayBrowse(true)
+					.OnBrowseOverride(FSimpleDelegate::CreateSP(this, &SPlutoGameplayTagInspectorPanel::HandleFocusClicked))
 					.AllowClear(true)
 				]
 				+ SHorizontalBox::Slot()
@@ -217,18 +231,6 @@ void SPlutoGameplayTagInspectorPanel::Construct(const FArguments& InArgs)
 							TEXT("Immediately refresh gameplay tag data from the observed target."));
 					})
 					.OnClicked(this, &SPlutoGameplayTagInspectorPanel::HandleRefreshClicked)
-				]
-				+ SHorizontalBox::Slot()
-				.AutoWidth()
-				.Padding(0.0f, 0.0f, 8.0f, 0.0f)
-				[
-					SNew(SButton)
-					.Text(this, &SPlutoGameplayTagInspectorPanel::BuildLanguageButtonText)
-					.ToolTipText_Lambda([]()
-					{
-						return MakePanelText(TEXT("切换中英文界面。"), TEXT("Toggle the UI language between Chinese and English."));
-					})
-					.OnClicked(this, &SPlutoGameplayTagInspectorPanel::HandleLanguageClicked)
 				]
 				+ SHorizontalBox::Slot()
 				.AutoWidth()
@@ -865,6 +867,21 @@ FReply SPlutoGameplayTagInspectorPanel::HandleLockClicked()
 
 	RefreshObservedData(true);
 	return FReply::Handled();
+}
+
+void SPlutoGameplayTagInspectorPanel::HandleFocusClicked()
+{
+	if (GEditor == nullptr)
+	{
+		return;
+	}
+
+	if (AActor* TargetActor = ResolveObservedActor().Get())
+	{
+		GEditor->SelectNone(false, true);
+		GEditor->SelectActor(TargetActor, true, true, true);
+		GEditor->MoveViewportCamerasToActor(*TargetActor, false);
+	}
 }
 
 FString SPlutoGameplayTagInspectorPanel::GetObservedActorObjectPath() const

@@ -31,14 +31,15 @@ void FPlutoGameplayTagInspectorEditorModule::StartupModule()
 {
 	RegisterStyle();
 
-	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(
-		TabName,
-		FOnSpawnTab::CreateRaw(this, &FPlutoGameplayTagInspectorEditorModule::SpawnInspectorTab))
-		.SetDisplayName(PlutoGameplayTagInspectorEditor::MakeLocalizedText(
-			TEXT("Pluto GameplayTag \u68c0\u67e5\u5668"),
-			TEXT("Pluto GameplayTag Inspector")))
-		.SetIcon(GetPluginMenuIcon())
-		.SetMenuType(ETabSpawnerMenuType::Hidden);
+	for (int32 InstanceIndex = 0; InstanceIndex < MaxInspectorTabCount; ++InstanceIndex)
+	{
+		FGlobalTabmanager::Get()->RegisterNomadTabSpawner(
+			GetInspectorTabName(InstanceIndex),
+			FOnSpawnTab::CreateRaw(this, &FPlutoGameplayTagInspectorEditorModule::SpawnInspectorTab, InstanceIndex))
+			.SetDisplayName(GetInspectorTabDisplayName(InstanceIndex))
+			.SetIcon(GetPluginMenuIcon())
+			.SetMenuType(ETabSpawnerMenuType::Hidden);
+	}
 
 	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(
 		DocumentationTabName,
@@ -61,14 +62,27 @@ void FPlutoGameplayTagInspectorEditorModule::ShutdownModule()
 		UToolMenus::UnregisterOwner(this);
 	}
 
-	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(TabName);
+	for (int32 InstanceIndex = 0; InstanceIndex < MaxInspectorTabCount; ++InstanceIndex)
+	{
+		FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(GetInspectorTabName(InstanceIndex));
+		InspectorTabs[InstanceIndex].Reset();
+	}
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(DocumentationTabName);
 	UnregisterStyle();
 }
 
 void FPlutoGameplayTagInspectorEditorModule::OpenInspectorTab()
 {
-	FGlobalTabmanager::Get()->TryInvokeTab(TabName);
+	for (int32 InstanceIndex = 0; InstanceIndex < MaxInspectorTabCount; ++InstanceIndex)
+	{
+		if (!InspectorTabs[InstanceIndex].IsValid())
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(GetInspectorTabName(InstanceIndex));
+			return;
+		}
+	}
+
+	FGlobalTabmanager::Get()->TryInvokeTab(GetInspectorTabName(MaxInspectorTabCount - 1));
 }
 
 void FPlutoGameplayTagInspectorEditorModule::OpenDocumentationTab()
@@ -238,8 +252,8 @@ void FPlutoGameplayTagInspectorEditorModule::AddOpenInspectorEntry(FToolMenuSect
 			TEXT("Pluto GameplayTag \u68c0\u67e5\u5668"),
 			TEXT("Pluto GameplayTag Inspector")),
 		PlutoGameplayTagInspectorEditor::MakeLocalizedText(
-			TEXT("\u6253\u5f00 Pluto GameplayTag \u68c0\u67e5\u9762\u677f\u3002"),
-			TEXT("Open the Pluto gameplay tag inspector panel.")),
+			TEXT("\u6253\u5f00 Pluto GameplayTag \u68c0\u67e5\u9762\u677f\uff0c\u6700\u591a\u540c\u65f6\u6253\u5f00 3 \u4e2a\u5b9e\u4f8b\u3002"),
+			TEXT("Open a Pluto gameplay tag inspector panel, up to 3 simultaneous instances.")),
 		GetPluginMenuIcon(),
 		FUIAction(FExecuteAction::CreateRaw(this, &FPlutoGameplayTagInspectorEditorModule::OpenInspectorTab)));
 }
@@ -258,17 +272,59 @@ void FPlutoGameplayTagInspectorEditorModule::AddOpenDocumentationEntry(FToolMenu
 		FUIAction(FExecuteAction::CreateRaw(this, &FPlutoGameplayTagInspectorEditorModule::OpenDocumentationTab)));
 }
 
-TSharedRef<SDockTab> FPlutoGameplayTagInspectorEditorModule::SpawnInspectorTab(const FSpawnTabArgs& SpawnTabArgs)
+FName FPlutoGameplayTagInspectorEditorModule::GetInspectorTabName(int32 InstanceIndex) const
+{
+	if (InstanceIndex <= 0)
+	{
+		return TabName;
+	}
+
+	return FName(*FString::Printf(TEXT("%s_%d"), *TabName.ToString(), InstanceIndex + 1));
+}
+
+FText FPlutoGameplayTagInspectorEditorModule::GetInspectorTabDisplayName(int32 InstanceIndex) const
+{
+	if (InstanceIndex <= 0)
+	{
+		return PlutoGameplayTagInspectorEditor::MakeLocalizedText(
+			TEXT("Pluto GameplayTag \u68c0\u67e5\u5668"),
+			TEXT("Pluto GameplayTag Inspector"));
+	}
+
+	return PlutoGameplayTagInspectorEditor::MakeLocalizedText(
+		*FString::Printf(TEXT("Pluto GameplayTag \u68c0\u67e5\u5668 %d"), InstanceIndex + 1),
+		*FString::Printf(TEXT("Pluto GameplayTag Inspector %d"), InstanceIndex + 1));
+}
+
+TSharedRef<SDockTab> FPlutoGameplayTagInspectorEditorModule::SpawnInspectorTab(const FSpawnTabArgs& SpawnTabArgs, int32 InstanceIndex)
 {
 	const TSharedRef<SDockTab> DockTab =
 		SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
+		.Label(GetInspectorTabDisplayName(InstanceIndex))
+		.OnTabClosed(SDockTab::FOnTabClosedCallback::CreateRaw(
+			this,
+			&FPlutoGameplayTagInspectorEditorModule::HandleInspectorTabClosed,
+			InstanceIndex))
 		[
 			SNew(SPlutoGameplayTagInspectorPanel)
 		];
 
+	if (InstanceIndex >= 0 && InstanceIndex < MaxInspectorTabCount)
+	{
+		InspectorTabs[InstanceIndex] = DockTab;
+	}
+
 	DockTab->SetTabIcon(GetPluginTabBrush());
 	return DockTab;
+}
+
+void FPlutoGameplayTagInspectorEditorModule::HandleInspectorTabClosed(TSharedRef<SDockTab> ClosedTab, int32 InstanceIndex)
+{
+	if (InstanceIndex >= 0 && InstanceIndex < MaxInspectorTabCount)
+	{
+		InspectorTabs[InstanceIndex].Reset();
+	}
 }
 
 TSharedRef<SDockTab> FPlutoGameplayTagInspectorEditorModule::SpawnDocumentationTab(const FSpawnTabArgs& SpawnTabArgs)

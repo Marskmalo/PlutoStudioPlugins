@@ -52,6 +52,8 @@ From the `Pluto` menu in the editor top bar, you can open:
 
 The Inspector is also available from the `Window` menu.
 
+The Inspector supports up to 3 simultaneous panel instances. Different instances can lock different Actors, which is useful when comparing gameplay tag data across multiple objects. When all 3 instances are already open, the open command focuses the third instance.
+
 ### 2. Pick an observed Actor
 
 The top-left Actor picker supports:

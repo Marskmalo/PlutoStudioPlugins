@@ -50,8 +50,70 @@ namespace PlutoGameplayTagInspectorRuntimeUtils
 		return StructType == TBaseStructure<FGameplayTag>::Get();
 	}
 
+	FString FormatCompactNumber(double Value)
+	{
+		if (FMath::IsNearlyZero(Value))
+		{
+			Value = 0.0;
+		}
+
+		FString NumberString = FString::Printf(TEXT("%.3f"), Value);
+		while (NumberString.Contains(TEXT(".")) && NumberString.EndsWith(TEXT("0")))
+		{
+			NumberString.LeftChopInline(1);
+		}
+		if (NumberString.EndsWith(TEXT(".")))
+		{
+			NumberString.LeftChopInline(1);
+		}
+
+		return NumberString;
+	}
+
 	FString ExportPropertyValueToString(const FProperty* Property, const void* ValuePtr)
 	{
+		if (const FFloatProperty* FloatProperty = CastField<FFloatProperty>(Property))
+		{
+			return ValuePtr != nullptr
+				? FormatCompactNumber(FloatProperty->GetPropertyValue(ValuePtr))
+				: TEXT("<None>");
+		}
+
+		if (const FDoubleProperty* DoubleProperty = CastField<FDoubleProperty>(Property))
+		{
+			return ValuePtr != nullptr
+				? FormatCompactNumber(DoubleProperty->GetPropertyValue(ValuePtr))
+				: TEXT("<None>");
+		}
+
+		if (const FStructProperty* StructProperty = CastField<FStructProperty>(Property))
+		{
+			if (StructProperty->Struct == TBaseStructure<FVector>::Get())
+			{
+				const FVector* VectorValue = static_cast<const FVector*>(ValuePtr);
+				if (VectorValue != nullptr)
+				{
+					return FString::Printf(
+						TEXT("X=%s,Y=%s,Z=%s"),
+						*FormatCompactNumber(VectorValue->X),
+						*FormatCompactNumber(VectorValue->Y),
+						*FormatCompactNumber(VectorValue->Z));
+				}
+			}
+
+			if (StructProperty->Struct == TBaseStructure<FVector2D>::Get())
+			{
+				const FVector2D* VectorValue = static_cast<const FVector2D*>(ValuePtr);
+				if (VectorValue != nullptr)
+				{
+					return FString::Printf(
+						TEXT("X=%s,Y=%s"),
+						*FormatCompactNumber(VectorValue->X),
+						*FormatCompactNumber(VectorValue->Y));
+				}
+			}
+		}
+
 		FString ValueString;
 		if (Property != nullptr && ValuePtr != nullptr)
 		{

@@ -1088,9 +1088,18 @@ FString SPlutoGameplayTagInspectorPanel::GetContainerDisplayName(const FPlutoGam
 
 	FString LeftPart;
 	FString RightPart;
-	if (ContainerPath.Split(TEXT("."), &LeftPart, &RightPart, ESearchCase::IgnoreCase, ESearchDir::FromEnd))
+	FString KeySuffix;
+	FString PathBeforeKey = ContainerPath;
+	const int32 KeyStartIndex = ContainerPath.Find(TEXT("[Key "), ESearchCase::IgnoreCase, ESearchDir::FromStart);
+	if (KeyStartIndex != INDEX_NONE)
 	{
-		return RightPart;
+		PathBeforeKey = ContainerPath.Left(KeyStartIndex);
+		KeySuffix = ContainerPath.Mid(KeyStartIndex);
+	}
+
+	if (PathBeforeKey.Split(TEXT("."), &LeftPart, &RightPart, ESearchCase::IgnoreCase, ESearchDir::FromEnd))
+	{
+		return RightPart + KeySuffix;
 	}
 
 	return ContainerPath;

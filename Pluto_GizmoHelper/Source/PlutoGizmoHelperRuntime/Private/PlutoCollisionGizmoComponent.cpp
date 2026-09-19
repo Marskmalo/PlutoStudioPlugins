@@ -7,6 +7,7 @@
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "HAL/IConsoleManager.h"
+#include "Materials/Material.h"
 #include "Materials/MaterialRenderProxy.h"
 #include "MeshElementCollector.h"
 #include "PlutoGizmoHelperSettings.h"

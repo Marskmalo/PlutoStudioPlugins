@@ -1,0 +1,19 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "0.1.0",
+	"FriendlyName": "Pluto Asset Naming Helper",
+	"Description": "Audit Unreal asset names against project naming rules and prepare safe rename plans.",
+	"Category": "Tools",
+	"CreatedBy": "PLUTO STUDIO",
+	"CanContainContent": false,
+	"IsBetaVersion": true,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "PlutoAssetNamingHelperEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}

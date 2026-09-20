@@ -178,19 +178,30 @@ void FPlutoGameplayTagInspectorEditorModule::RegisterMenus()
 	FToolMenuOwnerScoped OwnerScoped(this);
 
 	UToolMenu* MainMenu = UToolMenus::Get()->ExtendMenu("LevelEditor.MainMenu");
-	FToolMenuSection& PlutoMainSection = MainMenu->AddSection(
-		"PlutoMainMenuSection",
-		TAttribute<FText>(),
-		FToolMenuInsert("Help", EToolMenuInsertType::After));
-	PlutoMainSection.AddSubMenu(
-		"PlutoMenu",
-		PlutoGameplayTagInspectorEditor::MakeLocalizedText(TEXT("Pluto"), TEXT("Pluto")),
-		PlutoGameplayTagInspectorEditor::MakeLocalizedText(
-			TEXT("\u6253\u5f00 Pluto \u76f8\u5173\u5de5\u5177\u3002"),
-			TEXT("Open Pluto tools.")),
-		FNewToolMenuDelegate::CreateRaw(this, &FPlutoGameplayTagInspectorEditorModule::PopulatePlutoMenu),
-		false,
-		GetPluginMenuIcon());
+	FToolMenuSection& PlutoMainSection = MainMenu->FindOrAddSection(NAME_None);
+
+	UToolMenu* PlutoMenu = nullptr;
+	if (PlutoMainSection.FindEntry("PlutoMenu") == nullptr)
+	{
+		FToolMenuEntry& PlutoEntry = PlutoMainSection.AddSubMenu(
+			"PlutoMenu",
+			PlutoGameplayTagInspectorEditor::MakeLocalizedText(TEXT("Pluto"), TEXT("Pluto")),
+			PlutoGameplayTagInspectorEditor::MakeLocalizedText(
+				TEXT("\u6253\u5f00 Pluto \u76f8\u5173\u5de5\u5177\u3002"),
+				TEXT("Open Pluto tools.")),
+			FNewToolMenuChoice(),
+			false,
+			GetPluginMenuIcon());
+		PlutoEntry.Owner = FToolMenuOwner(TEXT("PlutoSharedMenu"));
+		PlutoEntry.InsertPosition = FToolMenuInsert("Help", EToolMenuInsertType::After);
+		PlutoMenu = UToolMenus::Get()->ExtendMenu("LevelEditor.MainMenu.PlutoMenu");
+	}
+	else
+	{
+		PlutoMenu = UToolMenus::Get()->ExtendMenu("LevelEditor.MainMenu.PlutoMenu");
+	}
+
+	PopulatePlutoMenu(PlutoMenu);
 
 	UToolMenu* WindowMenu = UToolMenus::Get()->ExtendMenu("LevelEditor.MainMenu.Window");
 	FToolMenuSection& WindowSection = WindowMenu->FindOrAddSection("WindowLayout");

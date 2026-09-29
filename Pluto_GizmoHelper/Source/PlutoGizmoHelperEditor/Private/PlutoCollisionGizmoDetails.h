@@ -3,7 +3,7 @@
 #include "IDetailCustomization.h"
 
 class UPlutoCollisionGizmoComponent;
-class UShapeComponent;
+class UPrimitiveComponent;
 
 class FPlutoShapeComponentDetails final : public IDetailCustomization
 {
@@ -20,7 +20,7 @@ private:
 		struct FSubobjectDataHandle& OutTargetHandle,
 		FName& OutTargetVariableName) const;
 
-	TWeakObjectPtr<UShapeComponent> TargetComponent;
+	TWeakObjectPtr<UPrimitiveComponent> TargetComponent;
 	IDetailLayoutBuilder* DetailBuilderPtr = nullptr;
 };
 

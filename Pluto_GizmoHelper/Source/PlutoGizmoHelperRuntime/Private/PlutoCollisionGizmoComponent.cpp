@@ -1,9 +1,11 @@
 #include "PlutoCollisionGizmoComponent.h"
 
 #include "Components/BoxComponent.h"
+#include "Components/BrushComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/ShapeComponent.h"
 #include "Components/SphereComponent.h"
+#include "DynamicMeshBuilder.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "HAL/IConsoleManager.h"
@@ -11,6 +13,8 @@
 #include "Materials/MaterialRenderProxy.h"
 #include "MeshElementCollector.h"
 #include "PlutoGizmoHelperSettings.h"
+#include "PhysicsEngine/BodySetup.h"
+#include "PhysicsEngine/ConvexElem.h"
 #include "PrimitiveDrawingUtils.h"
 #include "PrimitiveSceneProxy.h"
 #include "PrimitiveViewRelevance.h"
@@ -43,7 +47,8 @@ namespace PlutoCollisionGizmo
 		None,
 		Box,
 		Sphere,
-		Capsule
+		Capsule,
+		Brush
 	};
 
 	struct FRenderData
@@ -54,6 +59,9 @@ namespace PlutoCollisionGizmo
 		float SphereRadius = 0.0f;
 		float CapsuleRadius = 0.0f;
 		float CapsuleHalfHeight = 0.0f;
+		TArray<FVector> BrushVertices;
+		TArray<int32> BrushIndices;
+		TArray<FIntPoint> BrushEdges;
 		FPlutoCollisionGizmoStyle Style;
 		bool bSelectedOnly = false;
 		bool bEditorWorld = false;
@@ -85,6 +93,91 @@ namespace PlutoCollisionGizmo
 			Data.Transform = Capsule->GetComponentTransform();
 			Data.CapsuleRadius = Capsule->GetScaledCapsuleRadius();
 			Data.CapsuleHalfHeight = Capsule->GetScaledCapsuleHalfHeight();
+		}
+		else if (const UBrushComponent* Brush = Cast<UBrushComponent>(Component->GetTargetCollision()))
+		{
+			const UBodySetup* BodySetup = const_cast<UBrushComponent*>(Brush)->GetBodySetup();
+			if (BodySetup)
+			{
+				Data.ShapeType = EShapeType::Brush;
+				Data.Transform = Brush->GetComponentTransform();
+
+				struct FBrushEdgeInfo
+				{
+					FVector FirstNormal = FVector::ZeroVector;
+					int32 AdjacentTriangleCount = 0;
+					bool bIsCrease = false;
+				};
+
+				TMap<FIntPoint, FBrushEdgeInfo> EdgeInfos;
+				for (const FKConvexElem& Convex : BodySetup->AggGeom.ConvexElems)
+				{
+					const int32 VertexOffset = Data.BrushVertices.Num();
+					const FTransform ConvexTransform = Convex.GetTransform();
+					for (const FVector& Vertex : Convex.VertexData)
+					{
+						Data.BrushVertices.Add(ConvexTransform.TransformPosition(Vertex));
+					}
+
+					for (int32 TriangleIndex = 0; TriangleIndex + 2 < Convex.IndexData.Num(); TriangleIndex += 3)
+					{
+						const int32 LocalIndices[3] =
+						{
+							Convex.IndexData[TriangleIndex],
+							Convex.IndexData[TriangleIndex + 1],
+							Convex.IndexData[TriangleIndex + 2]
+						};
+
+						if (LocalIndices[0] < 0 || LocalIndices[1] < 0 || LocalIndices[2] < 0
+							|| !Convex.VertexData.IsValidIndex(LocalIndices[0])
+							|| !Convex.VertexData.IsValidIndex(LocalIndices[1])
+							|| !Convex.VertexData.IsValidIndex(LocalIndices[2]))
+						{
+							continue;
+						}
+
+						const int32 Indices[3] =
+						{
+							VertexOffset + LocalIndices[0],
+							VertexOffset + LocalIndices[1],
+							VertexOffset + LocalIndices[2]
+						};
+						Data.BrushIndices.Append(Indices, UE_ARRAY_COUNT(Indices));
+						const FVector TriangleNormal = FVector::CrossProduct(
+							Data.BrushVertices[Indices[1]] - Data.BrushVertices[Indices[0]],
+							Data.BrushVertices[Indices[2]] - Data.BrushVertices[Indices[0]]).GetSafeNormal();
+
+						for (int32 EdgeIndex = 0; EdgeIndex < 3; ++EdgeIndex)
+						{
+							const int32 A = Indices[EdgeIndex];
+							const int32 B = Indices[(EdgeIndex + 1) % 3];
+							FBrushEdgeInfo& EdgeInfo = EdgeInfos.FindOrAdd(FIntPoint(FMath::Min(A, B), FMath::Max(A, B)));
+							if (EdgeInfo.AdjacentTriangleCount == 0)
+							{
+								EdgeInfo.FirstNormal = TriangleNormal;
+							}
+							else if (FMath::Abs(FVector::DotProduct(EdgeInfo.FirstNormal, TriangleNormal)) < 0.999f)
+							{
+								EdgeInfo.bIsCrease = true;
+							}
+							++EdgeInfo.AdjacentTriangleCount;
+						}
+					}
+				}
+
+				Data.BrushEdges.Reserve(EdgeInfos.Num());
+				for (const TPair<FIntPoint, FBrushEdgeInfo>& EdgePair : EdgeInfos)
+				{
+					if (EdgePair.Value.AdjacentTriangleCount == 1 || EdgePair.Value.bIsCrease)
+					{
+						Data.BrushEdges.Add(EdgePair.Key);
+					}
+				}
+				if (Data.BrushVertices.IsEmpty() || Data.BrushIndices.IsEmpty())
+				{
+					Data.ShapeType = EShapeType::None;
+				}
+			}
 		}
 
 		return Data;
@@ -198,6 +291,50 @@ public:
 				}
 				break;
 			}
+			case PlutoCollisionGizmo::EShapeType::Brush:
+			{
+				if (FillMaterial)
+				{
+					FDynamicMeshBuilder MeshBuilder(Collector.GetFeatureLevel());
+					MeshBuilder.ReserveVertices(Data.BrushVertices.Num());
+					MeshBuilder.ReserveTriangles(Data.BrushIndices.Num() / 3);
+					for (const FVector& Vertex : Data.BrushVertices)
+					{
+						MeshBuilder.AddVertex(
+							FVector3f(Vertex),
+							FVector2f::ZeroVector,
+							FVector3f(1.0f, 0.0f, 0.0f),
+							FVector3f(0.0f, 1.0f, 0.0f),
+							FVector3f(0.0f, 0.0f, 1.0f),
+							FColor::White);
+					}
+					for (int32 TriangleIndex = 0; TriangleIndex + 2 < Data.BrushIndices.Num(); TriangleIndex += 3)
+					{
+						MeshBuilder.AddTriangle(
+							Data.BrushIndices[TriangleIndex],
+							Data.BrushIndices[TriangleIndex + 1],
+							Data.BrushIndices[TriangleIndex + 2]);
+					}
+					MeshBuilder.GetMesh(Data.Transform.ToMatrixWithScale(), FillMaterial, SDPG_World, true, false, ViewIndex, Collector);
+				}
+
+				if (Data.Style.bDrawOutline)
+				{
+					for (const FIntPoint& Edge : Data.BrushEdges)
+					{
+						if (Data.BrushVertices.IsValidIndex(Edge.X) && Data.BrushVertices.IsValidIndex(Edge.Y))
+						{
+							PDI->DrawLine(
+								Data.Transform.TransformPosition(Data.BrushVertices[Edge.X]),
+								Data.Transform.TransformPosition(Data.BrushVertices[Edge.Y]),
+								OutlineColor,
+								SDPG_World,
+								Data.Style.LineThickness);
+						}
+					}
+				}
+				break;
+			}
 			default:
 				break;
 			}
@@ -253,12 +390,12 @@ UPlutoCollisionGizmoComponent::UPlutoCollisionGizmoComponent()
 	bUseAttachParentBound = false;
 }
 
-void UPlutoCollisionGizmoComponent::SetTargetCollision(UShapeComponent* InTargetCollision)
+void UPlutoCollisionGizmoComponent::SetTargetCollision(UPrimitiveComponent* InTargetCollision)
 {
 	SetTargetCollisionReference(InTargetCollision, InTargetCollision ? InTargetCollision->GetFName() : NAME_None);
 }
 
-void UPlutoCollisionGizmoComponent::SetTargetCollisionReference(UShapeComponent* InTargetCollision, FName ComponentPropertyName)
+void UPlutoCollisionGizmoComponent::SetTargetCollisionReference(UPrimitiveComponent* InTargetCollision, FName ComponentPropertyName)
 {
 	TargetCollision.OverrideComponent = InTargetCollision;
 	TargetCollision.ComponentProperty = ComponentPropertyName;
@@ -273,18 +410,55 @@ void UPlutoCollisionGizmoComponent::SetTargetCollisionReference(UShapeComponent*
 	RefreshGizmo();
 }
 
-UShapeComponent* UPlutoCollisionGizmoComponent::GetTargetCollision() const
+UPrimitiveComponent* UPlutoCollisionGizmoComponent::GetTargetCollision() const
 {
-	UShapeComponent* Shape = Cast<UShapeComponent>(TargetCollision.GetComponent(GetOwner()));
-	if (!Shape)
+	const AActor* Owner = GetOwner();
+	if (!Owner)
 	{
-		Shape = Cast<UShapeComponent>(TargetCollision.OverrideComponent.Get());
+		return nullptr;
 	}
 
-	const bool bSameOwner = Shape && Shape->GetOwner() == GetOwner();
-	return bSameOwner && (Cast<UBoxComponent>(Shape) || Cast<USphereComponent>(Shape) || Cast<UCapsuleComponent>(Shape))
-		? Shape
-		: nullptr;
+	// The attachment is duplicated together with the Actor and is therefore the most
+	// reliable way to resolve an instance-created gizmo in PIE. FComponentReference's
+	// weak override can still point at the editor-world component after duplication.
+	if (UPrimitiveComponent* AttachedTarget = Cast<UPrimitiveComponent>(GetAttachParent()))
+	{
+		if (AttachedTarget->GetOwner() == Owner && IsSupportedTarget(AttachedTarget))
+		{
+			return AttachedTarget;
+		}
+	}
+
+	if (UPrimitiveComponent* ReferencedTarget = Cast<UPrimitiveComponent>(TargetCollision.GetComponent(GetOwner())))
+	{
+		if (ReferencedTarget->GetOwner() == Owner && IsSupportedTarget(ReferencedTarget))
+		{
+			return ReferencedTarget;
+		}
+	}
+
+	if (!TargetCollision.ComponentProperty.IsNone())
+	{
+		TInlineComponentArray<UPrimitiveComponent*> PrimitiveComponents(GetOwner());
+		for (UPrimitiveComponent* Candidate : PrimitiveComponents)
+		{
+			if (Candidate && Candidate->GetFName() == TargetCollision.ComponentProperty && IsSupportedTarget(Candidate))
+			{
+				return Candidate;
+			}
+		}
+	}
+
+	return nullptr;
+}
+
+bool UPlutoCollisionGizmoComponent::IsSupportedTarget(const UPrimitiveComponent* Component)
+{
+	return Component
+		&& (Component->IsA<UBoxComponent>()
+			|| Component->IsA<USphereComponent>()
+			|| Component->IsA<UCapsuleComponent>()
+			|| Component->IsA<UBrushComponent>());
 }
 
 void UPlutoCollisionGizmoComponent::SetGizmoEnabled(bool bEnabled)
@@ -380,7 +554,7 @@ FPrimitiveSceneProxy* UPlutoCollisionGizmoComponent::CreateSceneProxy()
 
 FBoxSphereBounds UPlutoCollisionGizmoComponent::CalcBounds(const FTransform& LocalToWorld) const
 {
-	if (const UShapeComponent* Shape = GetTargetCollision())
+	if (const UPrimitiveComponent* Shape = GetTargetCollision())
 	{
 		return Shape->Bounds;
 	}
@@ -416,7 +590,7 @@ void UPlutoCollisionGizmoComponent::OnRegister()
 
 uint32 UPlutoCollisionGizmoComponent::BuildTargetSignature() const
 {
-	const UShapeComponent* Shape = GetTargetCollision();
+	const UPrimitiveComponent* Shape = GetTargetCollision();
 	if (!Shape)
 	{
 		return 0;
@@ -437,6 +611,30 @@ uint32 UPlutoCollisionGizmoComponent::BuildTargetSignature() const
 	{
 		Hash = HashCombineFast(Hash, GetTypeHash(Capsule->GetUnscaledCapsuleRadius()));
 		Hash = HashCombineFast(Hash, GetTypeHash(Capsule->GetUnscaledCapsuleHalfHeight()));
+	}
+	else if (const UBrushComponent* Brush = Cast<UBrushComponent>(Shape))
+	{
+		if (const UBodySetup* BodySetup = const_cast<UBrushComponent*>(Brush)->GetBodySetup())
+		{
+			Hash = HashCombineFast(Hash, PointerHash(BodySetup));
+			Hash = HashCombineFast(Hash, GetTypeHash(BodySetup->AggGeom.ConvexElems.Num()));
+			for (const FKConvexElem& Convex : BodySetup->AggGeom.ConvexElems)
+			{
+				Hash = HashCombineFast(Hash, GetTypeHash(Convex.VertexData.Num()));
+				Hash = HashCombineFast(Hash, GetTypeHash(Convex.IndexData.Num()));
+				Hash = HashCombineFast(Hash, GetTypeHash(Convex.ElemBox.Min));
+				Hash = HashCombineFast(Hash, GetTypeHash(Convex.ElemBox.Max));
+				Hash = HashCombineFast(Hash, GetTypeHash(Convex.GetTransform()));
+				for (const FVector& Vertex : Convex.VertexData)
+				{
+					Hash = HashCombineFast(Hash, GetTypeHash(Vertex));
+				}
+				for (const int32 Index : Convex.IndexData)
+				{
+					Hash = HashCombineFast(Hash, GetTypeHash(Index));
+				}
+			}
+		}
 	}
 
 	Hash = HashCombineFast(Hash, GetTypeHash(bGizmoEnabled));

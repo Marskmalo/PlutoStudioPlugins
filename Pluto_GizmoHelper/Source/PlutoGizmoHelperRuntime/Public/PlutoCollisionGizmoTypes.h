@@ -19,7 +19,7 @@ struct PLUTOGIZMOHELPERRUNTIME_API FPlutoCollisionGizmoStyle
 	bool bDrawOutline = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Outline")
-	FLinearColor OutlineColor = FLinearColor(0.85f, 0.05f, 0.16f, 1.0f);
+	FLinearColor OutlineColor = FLinearColor(0.0f, 1.0f, 1.0f, 1.0f);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Outline", meta = (ClampMin = "0.0", UIMin = "0.0", UIMax = "10.0"))
 	float LineThickness = 1.5f;
@@ -28,7 +28,7 @@ struct PLUTOGIZMOHELPERRUNTIME_API FPlutoCollisionGizmoStyle
 	bool bDrawFill = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fill")
-	FLinearColor FillColor = FLinearColor(0.85f, 0.05f, 0.16f, 1.0f);
+	FLinearColor FillColor = FLinearColor(0.0f, 1.0f, 1.0f, 0.1f);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fill", meta = (ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
 	float FillOpacity = 0.15f;

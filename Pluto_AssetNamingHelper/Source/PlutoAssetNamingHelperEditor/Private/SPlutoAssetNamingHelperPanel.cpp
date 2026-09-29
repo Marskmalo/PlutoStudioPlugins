@@ -3,6 +3,7 @@
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "AssetToolsModule.h"
 #include "ContentBrowserModule.h"
+#include "Framework/Application/SlateApplication.h"
 #include "Framework/Docking/TabManager.h"
 #include "Framework/Notifications/NotificationManager.h"
 #include "HAL/FileManager.h"
@@ -12,9 +13,9 @@
 #include "Internationalization/Text.h"
 #include "Misc/DateTime.h"
 #include "Misc/FileHelper.h"
-#include "Misc/MessageDialog.h"
 #include "Misc/Paths.h"
 #include "PlutoAssetNamingHelperEditorModule.h"
+#include "SPlutoAssetRenamePreview.h"
 #include "Styling/AppStyle.h"
 #include "Styling/SlateIconFinder.h"
 #include "Widgets/Colors/SColorBlock.h"
@@ -27,6 +28,7 @@
 #include "Widgets/Layout/SSplitter.h"
 #include "Widgets/Layout/SUniformGridPanel.h"
 #include "Widgets/Notifications/SNotificationList.h"
+#include "Widgets/SWindow.h"
 #include "Widgets/Views/SHeaderRow.h"
 #include "Widgets/Views/SListView.h"
 #include "Widgets/Views/STableRow.h"
@@ -266,11 +268,17 @@ void SPlutoAssetNamingHelperPanel::Construct(const FArguments& InArgs)
 					]
 					+ SHorizontalBox::Slot().AutoWidth().Padding(6.0f, 0.0f, 0.0f, 0.0f)
 					[
-						SNew(SButton).Text(LOCTEXT("Rescan", "重新扫描")).OnClicked(this, &SPlutoAssetNamingHelperPanel::HandleScanClicked)
+						SNew(SButton)
+						.Text(LOCTEXT("Rescan", "重新扫描"))
+						.ToolTipText(LOCTEXT("RescanTooltip", "按当前目录重新读取 Asset Registry，并刷新命名检查结果。"))
+						.OnClicked(this, &SPlutoAssetNamingHelperPanel::HandleScanClicked)
 					]
 					+ SHorizontalBox::Slot().AutoWidth().Padding(6.0f, 0.0f, 0.0f, 0.0f)
 					[
-						SNew(SButton).Text(LOCTEXT("ExportReport", "导出报告")).OnClicked(this, &SPlutoAssetNamingHelperPanel::HandleExportClicked)
+						SNew(SButton)
+						.Text(LOCTEXT("ExportReport", "导出报告"))
+						.ToolTipText(LOCTEXT("ExportReportTooltip", "把本次全部扫描结果导出为 UTF-8 CSV 文件。"))
+						.OnClicked(this, &SPlutoAssetNamingHelperPanel::HandleExportClicked)
 					]
 				]
 				+ SVerticalBox::Slot().AutoHeight().Padding(6.0f, 0.0f, 6.0f, 6.0f)
@@ -318,8 +326,8 @@ void SPlutoAssetNamingHelperPanel::Construct(const FArguments& InArgs)
 					+ SHorizontalBox::Slot().AutoWidth().Padding(6.0f, 0.0f)
 					[
 						SNew(SButton)
-						.Text(LOCTEXT("RenamePreview", "重命名预览"))
-						.ToolTipText(LOCTEXT("RenamePreviewTooltip", "读取所选资产的引用数量并预览改名计划；第一版不会修改资产。"))
+						.Text(LOCTEXT("RenamePreview", "重命名…"))
+						.ToolTipText(LOCTEXT("RenamePreviewTooltip", "打开所选资产的影响矩阵；可复核引用和依赖后执行纳入计划的重命名。"))
 						.OnClicked(this, &SPlutoAssetNamingHelperPanel::HandleRenamePreviewClicked)
 					]
 				]
@@ -443,7 +451,9 @@ FReply SPlutoAssetNamingHelperPanel::HandleScanClicked()
 	RebuildTypeFilters();
 	RefreshVisibleResults();
 	ShowTransientMessage(
-		FText::Format(LOCTEXT("ScanComplete", "扫描完成：找到 {0} 个资产。"), FText::AsNumber(AllResults.Num())),
+		FText::Format(
+			LOCTEXT("ScanComplete", "扫描完成：检查 {0} 个资产。"),
+			FText::AsNumber(AllResults.Num())),
 		true);
 	return FReply::Handled();
 }
@@ -503,26 +513,24 @@ FReply SPlutoAssetNamingHelperPanel::HandleRenamePreviewClicked()
 		return FReply::Handled();
 	}
 
-	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
-	FString Preview = TEXT("重命名影响预览（当前版本不会修改资产）\n\n");
-	for (const FAuditResultPtr& Item : SelectedItems)
-	{
-		TArray<FName> Referencers;
-		TArray<FName> Dependencies;
-		AssetRegistryModule.Get().GetReferencers(Item->AssetData.PackageName, Referencers);
-		AssetRegistryModule.Get().GetDependencies(Item->AssetData.PackageName, Dependencies);
+	const TSharedRef<SWindow> PreviewWindow = SNew(SWindow)
+		.Title(LOCTEXT("RenamePreviewTitle", "Pluto 重命名影响矩阵"))
+		.ClientSize(FVector2D(1120.0f, 720.0f))
+		.SupportsMinimize(true)
+		.SupportsMaximize(true)
+		[
+			SNew(SPlutoAssetRenamePreview)
+			.Items(SelectedItems)
+			.OnRenameCompleted(FSimpleDelegate::CreateSP(this, &SPlutoAssetNamingHelperPanel::HandleRenameCompleted))
+		];
 
-		Preview += FString::Printf(
-			TEXT("%s  →  %s\n引用者：%d　依赖：%d\n%s\n\n"),
-			*Item->AssetData.AssetName.ToString(),
-			Item->SuggestedName.IsEmpty() ? TEXT("尚无安全建议") : *Item->SuggestedName,
-			Referencers.Num(),
-			Dependencies.Num(),
-			Item->bRenameAllowed ? TEXT("可进入后续受控重命名流程") : TEXT("需要人工确认，不能自动修改"));
-	}
-
-	FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(Preview), LOCTEXT("RenamePreviewTitle", "Pluto 重命名预览"));
+	FSlateApplication::Get().AddWindow(PreviewWindow);
 	return FReply::Handled();
+}
+
+void SPlutoAssetNamingHelperPanel::HandleRenameCompleted()
+{
+	HandleScanClicked();
 }
 
 FReply SPlutoAssetNamingHelperPanel::HandleDocumentationClicked()

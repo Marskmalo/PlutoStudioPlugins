@@ -1,6 +1,7 @@
 #include "PlutoCollisionGizmoDetails.h"
 
 #include "Components/BoxComponent.h"
+#include "Components/BrushComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/ShapeComponent.h"
 #include "Components/SphereComponent.h"
@@ -230,8 +231,8 @@ void FPlutoShapeComponentDetails::CustomizeDetails(IDetailLayoutBuilder& DetailB
 		return;
 	}
 
-	UShapeComponent* Shape = Cast<UShapeComponent>(Objects[0].Get());
-	if (!Cast<UBoxComponent>(Shape) && !Cast<USphereComponent>(Shape) && !Cast<UCapsuleComponent>(Shape))
+	UPrimitiveComponent* Shape = Cast<UPrimitiveComponent>(Objects[0].Get());
+	if (!Cast<UBoxComponent>(Shape) && !Cast<USphereComponent>(Shape) && !Cast<UCapsuleComponent>(Shape) && !Cast<UBrushComponent>(Shape))
 	{
 		return;
 	}
@@ -270,7 +271,7 @@ void FPlutoShapeComponentDetails::CustomizeDetails(IDetailLayoutBuilder& DetailB
 			: L(TEXT("创建并绑定碰撞 Gizmo"), TEXT("Create and Bind Collision Gizmo")))
 		.ToolTipText(bHasGizmo
 			? L(TEXT("选择已经绑定到该碰撞组件的 Gizmo。"), TEXT("Select the gizmo already bound to this collision component."))
-			: L(TEXT("创建独立的伴生组件，并绑定到当前 Box、Sphere 或 Capsule。"), TEXT("Create an independent companion component bound to this Box, Sphere, or Capsule.")))
+			: L(TEXT("创建独立的伴生组件，并绑定到当前 Box、Sphere、Capsule 或 Brush。"), TEXT("Create an independent companion component bound to this Box, Sphere, Capsule, or Brush.")))
 		.OnClicked(this, &FPlutoShapeComponentDetails::HandleCreateOrLocate)
 	];
 }
@@ -281,7 +282,7 @@ bool FPlutoShapeComponentDetails::ResolveSubobjectContext(
 	FSubobjectDataHandle& OutTargetHandle,
 	FName& OutTargetVariableName) const
 {
-	UShapeComponent* Target = TargetComponent.Get();
+	UPrimitiveComponent* Target = TargetComponent.Get();
 	USubobjectDataSubsystem* Subsystem = USubobjectDataSubsystem::Get();
 	if (!Target || !Subsystem)
 	{
@@ -362,7 +363,7 @@ bool FPlutoShapeComponentDetails::ResolveSubobjectContext(
 
 UPlutoCollisionGizmoComponent* FPlutoShapeComponentDetails::FindExistingGizmo(FName* OutTargetVariableName) const
 {
-	UShapeComponent* Target = TargetComponent.Get();
+	UPrimitiveComponent* Target = TargetComponent.Get();
 	if (!Target)
 	{
 		return nullptr;
@@ -436,7 +437,7 @@ FReply FPlutoShapeComponentDetails::HandleCreateOrLocate()
 		return FReply::Handled();
 	}
 
-	UShapeComponent* Target = TargetComponent.Get();
+	UPrimitiveComponent* Target = TargetComponent.Get();
 	if (!Target)
 	{
 		ShowNotification(
@@ -646,8 +647,8 @@ void FPlutoCollisionGizmoComponentDetails::CustomizeDetails(IDetailLayoutBuilder
 		[
 			SNew(STextBlock)
 			.Text(L(
-				TEXT("目标必须是同一 Actor 上的 Box、Sphere 或 Capsule Collision。"),
-				TEXT("The target must be a Box, Sphere, or Capsule Collision on the same Actor.")))
+				TEXT("目标必须是同一 Actor 上的 Box、Sphere、Capsule 或 Brush Collision。"),
+				TEXT("The target must be a Box, Sphere, Capsule, or Brush Collision on the same Actor.")))
 			.ColorAndOpacity(FLinearColor(1.0f, 0.35f, 0.1f))
 			.AutoWrapText(true)
 		];

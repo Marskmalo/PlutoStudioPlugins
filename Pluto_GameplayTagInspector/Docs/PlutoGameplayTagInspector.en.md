@@ -45,10 +45,9 @@ This means:
 
 ### 1. Open the tool
 
-From the `Pluto` menu in the editor top bar, you can open:
+Open `Pluto GameplayTag Inspector` from the `Pluto` menu in the editor top bar.
 
-- `Pluto GameplayTag Inspector`
-- `Pluto GameplayTag Inspector Documentation`
+Documentation and UI language controls live inside the Inspector panel and no longer duplicate entries in the `Pluto` menu.
 
 The Inspector is also available from the `Window` menu.
 
@@ -112,7 +111,7 @@ Tag colors are derived from the tag itself, usually by tag prefix, not by the ow
 ## Inspector-coupled Blueprint functions
 
 This section only documents Blueprint functions that are coupled to the Inspector plugin itself.
-General-purpose gameplay tag editing, batch add/remove, query, or change-detection helpers belong to `PlutoFunctionLibrary`, not to this Inspector plugin, so they are intentionally not documented here.
+General-purpose gameplay tag editing, batch add/remove, query, or change-detection helpers belong to the `Pluto_FunctionLibrary` plugin, not to this Inspector plugin, so they are intentionally not documented here.
 
 ### PF_FindGameplayTagContainerName
 
@@ -160,10 +159,10 @@ It does not automatically explain which container produced each tag.
 
 If containers live inside complex nesting, temporary runtime-only structures, or data that is not visible through the expected reflection path, the Inspector may not fully reconstruct the tree.
 
-### 3. PlutoFunctionLibrary functions are intentionally not documented here
+### 3. Pluto_FunctionLibrary functions are intentionally not documented here
 
 General-purpose `GameplayTagContainer` nodes complement Unreal's native workflow, but they are not Inspector features.
-For example, batch add/remove and common gameplay tag queries are part of `PlutoFunctionLibrary`, so this document only keeps Inspector-coupled PF functions.
+For example, batch add/remove and common gameplay tag queries are part of the `Pluto_FunctionLibrary` plugin, so this document only keeps Inspector-coupled PF functions. Its runtime module name remains `PlutoFunctionLibrary` for compatibility with serialized Blueprint references.
 
 ### 4. This plugin does not introduce GAS
 

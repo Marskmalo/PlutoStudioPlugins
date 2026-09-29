@@ -45,10 +45,9 @@
 
 ### 1. 打开工具
 
-你可以在编辑器顶部菜单栏的 `Pluto` 菜单中打开：
+你可以从编辑器顶部菜单栏的 `Pluto` 菜单打开 `Pluto GameplayTag Inspector`。
 
-- `Pluto GameplayTag Inspector`
-- `Pluto GameplayTag Inspector Documentation`
+使用文档和界面语言切换位于 Inspector 面板内，不再重复占用 `Pluto` 菜单项。
 
 Inspector 也可以从 `Window` 菜单中打开。
 
@@ -111,7 +110,7 @@ Tag 的颜色通常由 Tag 本身的前缀决定，而不是由所属容器决�
 ## 和 Inspector 耦合的 Blueprint 函数
 
 本节只记录和 Inspector 插件自身耦合的 Blueprint 函数。
-通用的 GameplayTag 编辑、批量增删、查询、变化检测等辅助函数属于 `PlutoFunctionLibrary`，不是 Inspector 插件功能，因此不在本文档中展开。
+通用的 GameplayTag 编辑、批量增删、查询、变化检测等辅助函数属于 `Pluto_FunctionLibrary` 插件，不是 Inspector 插件功能，因此不在本文档中展开。
 
 ### PF_FindGameplayTagContainerName
 
@@ -162,10 +161,10 @@ OwnedTag 聚合视图只能告诉你对象当前拥有哪些 Tag。
 
 如果容器藏在复杂嵌套、临时运行时结构，或没有暴露到可扫描路径的数据里，Inspector 可能无法完整还原树状结构。
 
-### 3. PlutoFunctionLibrary 函数不在本文档中展开
+### 3. Pluto_FunctionLibrary 函数不在本文档中展开
 
 通用 `GameplayTagContainer` 节点是对 Unreal 原生工作流的补充，不是 Inspector 自身功能。
-例如批量增删、通用查询、变化检测等函数由 `PlutoFunctionLibrary` 提供；本文档只保留和 Inspector 插件耦合的 PF 函数。
+例如批量增删、通用查询、变化检测等函数由 `Pluto_FunctionLibrary` 插件提供；本文档只保留和 Inspector 插件耦合的 PF 函数。为兼容已有蓝图序列化引用，其运行时模块名仍保留为 `PlutoFunctionLibrary`。
 
 ### 4. 这个插件不引入 GAS
 

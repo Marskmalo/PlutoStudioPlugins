@@ -32,9 +32,7 @@ private:
 	const FSlateBrush* GetDocumentationTabBrush() const;
 	void RegisterMenus();
 	void PopulatePlutoMenu(UToolMenu* Menu);
-	void PopulateLanguageMenu(UToolMenu* Menu);
 	void AddOpenInspectorEntry(FToolMenuSection& Section);
-	void AddOpenDocumentationEntry(FToolMenuSection& Section);
 	FName GetInspectorTabName(int32 InstanceIndex) const;
 	FText GetInspectorTabDisplayName(int32 InstanceIndex) const;
 	TSharedRef<SDockTab> SpawnInspectorTab(const class FSpawnTabArgs& SpawnTabArgs, int32 InstanceIndex);

@@ -212,47 +212,6 @@ void FPlutoGameplayTagInspectorEditorModule::PopulatePlutoMenu(UToolMenu* Menu)
 {
 	FToolMenuSection& ToolsSection = Menu->AddSection("PlutoToolsSection");
 	AddOpenInspectorEntry(ToolsSection);
-	AddOpenDocumentationEntry(ToolsSection);
-
-	FToolMenuSection& LanguageSection = Menu->AddSection("PlutoLanguageSection");
-	LanguageSection.AddSubMenu(
-		"PlutoLanguageMenu",
-		PlutoGameplayTagInspectorEditor::MakeLocalizedText(TEXT("\u8bed\u8a00"), TEXT("Language")),
-		PlutoGameplayTagInspectorEditor::MakeLocalizedText(
-			TEXT("\u5207\u6362\u68c0\u67e5\u5668\u754c\u9762\u8bed\u8a00\u3002"),
-			TEXT("Switch the inspector language.")),
-		FNewToolMenuDelegate::CreateRaw(this, &FPlutoGameplayTagInspectorEditorModule::PopulateLanguageMenu),
-		false,
-		GetPluginMenuIcon());
-}
-
-void FPlutoGameplayTagInspectorEditorModule::PopulateLanguageMenu(UToolMenu* Menu)
-{
-	FToolMenuSection& Section = Menu->AddSection("PlutoLanguageItems");
-
-	Section.AddMenuEntry(
-		"PlutoLanguageChinese",
-		PlutoGameplayTagInspectorEditor::MakeLocalizedText(TEXT("\u4e2d\u6587"), TEXT("Chinese")),
-		PlutoGameplayTagInspectorEditor::MakeLocalizedText(
-			TEXT("\u5c06\u68c0\u67e5\u5668\u754c\u9762\u5207\u6362\u4e3a\u4e2d\u6587\u3002"),
-			TEXT("Switch the inspector UI to Chinese.")),
-		FSlateIcon(),
-		FUIAction(FExecuteAction::CreateLambda([]()
-		{
-			PlutoGameplayTagInspectorEditor::SetCurrentLanguage(EPlutoGameplayTagInspectorLanguage::Chinese);
-		})));
-
-	Section.AddMenuEntry(
-		"PlutoLanguageEnglish",
-		PlutoGameplayTagInspectorEditor::MakeLocalizedText(TEXT("\u82f1\u6587"), TEXT("English")),
-		PlutoGameplayTagInspectorEditor::MakeLocalizedText(
-			TEXT("\u5c06\u68c0\u67e5\u5668\u754c\u9762\u5207\u6362\u4e3a\u82f1\u6587\u3002"),
-			TEXT("Switch the inspector UI to English.")),
-		FSlateIcon(),
-		FUIAction(FExecuteAction::CreateLambda([]()
-		{
-			PlutoGameplayTagInspectorEditor::SetCurrentLanguage(EPlutoGameplayTagInspectorLanguage::English);
-		})));
 }
 
 void FPlutoGameplayTagInspectorEditorModule::AddOpenInspectorEntry(FToolMenuSection& Section)
@@ -267,20 +226,6 @@ void FPlutoGameplayTagInspectorEditorModule::AddOpenInspectorEntry(FToolMenuSect
 			TEXT("Open a Pluto gameplay tag inspector panel, up to 3 simultaneous instances.")),
 		GetPluginMenuIcon(),
 		FUIAction(FExecuteAction::CreateRaw(this, &FPlutoGameplayTagInspectorEditorModule::OpenInspectorTab)));
-}
-
-void FPlutoGameplayTagInspectorEditorModule::AddOpenDocumentationEntry(FToolMenuSection& Section)
-{
-	Section.AddMenuEntry(
-		"OpenPlutoGameplayTagInspectorDocumentation",
-		PlutoGameplayTagInspectorEditor::MakeLocalizedText(
-			TEXT("Pluto GameplayTag 使用文档"),
-			TEXT("Pluto GameplayTag Documentation")),
-		PlutoGameplayTagInspectorEditor::MakeLocalizedText(
-			TEXT("打开 Pluto GameplayTag Inspector 的本地使用文档。"),
-			TEXT("Open the local documentation for Pluto GameplayTag Inspector.")),
-		GetDocumentationIcon(),
-		FUIAction(FExecuteAction::CreateRaw(this, &FPlutoGameplayTagInspectorEditorModule::OpenDocumentationTab)));
 }
 
 FName FPlutoGameplayTagInspectorEditorModule::GetInspectorTabName(int32 InstanceIndex) const

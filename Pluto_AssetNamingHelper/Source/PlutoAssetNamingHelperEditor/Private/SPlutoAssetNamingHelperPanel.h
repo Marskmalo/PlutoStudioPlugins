@@ -43,6 +43,7 @@ private:
 	FReply HandleExportClicked();
 	FReply HandleRenamePreviewClicked();
 	FReply HandleDocumentationClicked();
+	void HandleRenameCompleted();
 	void HandleSearchChanged(const FText& NewSearchText);
 	void RebuildTypeFilters();
 	void RefreshVisibleResults();

@@ -1,6 +1,7 @@
 #include "PlutoGizmoHelperEditorModule.h"
 
 #include "Components/BoxComponent.h"
+#include "Components/BrushComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "Modules/ModuleManager.h"
@@ -36,6 +37,9 @@ void FPlutoGizmoHelperEditorModule::RegisterDetailsCustomizations()
 		UCapsuleComponent::StaticClass()->GetFName(),
 		FOnGetDetailCustomizationInstance::CreateStatic(&FPlutoShapeComponentDetails::MakeInstance));
 	PropertyEditor.RegisterCustomClassLayout(
+		UBrushComponent::StaticClass()->GetFName(),
+		FOnGetDetailCustomizationInstance::CreateStatic(&FPlutoShapeComponentDetails::MakeInstance));
+	PropertyEditor.RegisterCustomClassLayout(
 		UPlutoCollisionGizmoComponent::StaticClass()->GetFName(),
 		FOnGetDetailCustomizationInstance::CreateStatic(&FPlutoCollisionGizmoComponentDetails::MakeInstance));
 	PropertyEditor.RegisterCustomClassLayout(
@@ -59,6 +63,7 @@ void FPlutoGizmoHelperEditorModule::UnregisterDetailsCustomizations()
 	PropertyEditor.UnregisterCustomClassLayout(UBoxComponent::StaticClass()->GetFName());
 	PropertyEditor.UnregisterCustomClassLayout(USphereComponent::StaticClass()->GetFName());
 	PropertyEditor.UnregisterCustomClassLayout(UCapsuleComponent::StaticClass()->GetFName());
+	PropertyEditor.UnregisterCustomClassLayout(UBrushComponent::StaticClass()->GetFName());
 	PropertyEditor.UnregisterCustomClassLayout(UPlutoCollisionGizmoComponent::StaticClass()->GetFName());
 	PropertyEditor.UnregisterCustomClassLayout(UPlutoGizmoHelperSettings::StaticClass()->GetFName());
 	PropertyEditor.UnregisterCustomClassLayout(UPlutoGizmoHelperEditorSettings::StaticClass()->GetFName());

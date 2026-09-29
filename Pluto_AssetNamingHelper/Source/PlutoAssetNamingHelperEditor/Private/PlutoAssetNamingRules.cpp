@@ -39,6 +39,7 @@ namespace
 	{
 		static const TCHAR* Prefixes[] =
 		{
+			TEXT("PCGDA"), TEXT("PCGI"), TEXT("PCG"),
 			TEXT("BPML"), TEXT("BPI"), TEXT("BPL"), TEXT("BPA"), TEXT("BPS"),
 			TEXT("SKEL"), TEXT("PHYS"), TEXT("EQSC"), TEXT("BTS"), TEXT("BTD"),
 			TEXT("BTT"), TEXT("IMC"), TEXT("PDA"), TEXT("MPC"), TEXT("ABP"),
@@ -91,6 +92,9 @@ namespace
 		if (ClassName == TEXT("NiagaraSystem")) return TEXT("NS");
 		if (ClassName == TEXT("NiagaraEmitter")) return TEXT("NE");
 		if (ClassName == TEXT("DataTable")) return TEXT("DT");
+		if (ClassName == TEXT("PCGGraph")) return TEXT("PCG");
+		if (ClassName == TEXT("PCGGraphInstance")) return TEXT("PCGI");
+		if (ClassName == TEXT("PCGDataAsset")) return TEXT("PCGDA");
 		if (ClassName == TEXT("UserDefinedEnum")) return TEXT("E");
 		if (ClassName == TEXT("UserDefinedStruct")) return TEXT("S");
 		if (ClassName == TEXT("World")) return AssetName.StartsWith(TEXT("SL_")) ? TEXT("SL") : TEXT("L");
@@ -109,18 +113,36 @@ namespace
 	{
 		const FString ExpectedToken = ExpectedPrefix + TEXT("_");
 		const FString RecognizedPrefix = RecognizeRegisteredPrefix(AssetName);
+		const FString ProjectMarker = TEXT("_SOD_");
+		FString BaseAssetName = AssetName;
 
-		if (AssetName.StartsWith(TEXT("SOD_") + ExpectedToken))
+		if (AssetName.StartsWith(TEXT("SOD_")))
 		{
-			return ExpectedToken + TEXT("SOD_") + AssetName.RightChop(4 + ExpectedToken.Len());
+			BaseAssetName = AssetName.RightChop(4);
+			if (BaseAssetName.StartsWith(ExpectedToken))
+			{
+				BaseAssetName.RightChopInline(ExpectedToken.Len());
+			}
+		}
+		else
+		{
+			const int32 LastProjectMarkerIndex = AssetName.Find(
+				ProjectMarker,
+				ESearchCase::CaseSensitive,
+				ESearchDir::FromEnd);
+			if (LastProjectMarkerIndex != INDEX_NONE)
+			{
+				// Normalize any already structured or malformed prefix chain around the
+				// last project marker instead of nesting the entire old name again.
+				BaseAssetName = AssetName.Mid(LastProjectMarkerIndex + ProjectMarker.Len());
+			}
+			else if (!RecognizedPrefix.IsEmpty())
+			{
+				BaseAssetName = AssetName.RightChop(RecognizedPrefix.Len() + 1);
+			}
 		}
 
-		if (!RecognizedPrefix.IsEmpty())
-		{
-			return ExpectedToken + TEXT("SOD_") + AssetName.RightChop(RecognizedPrefix.Len() + 1);
-		}
-
-		return ExpectedToken + TEXT("SOD_") + AssetName;
+		return ExpectedToken + TEXT("SOD_") + BaseAssetName;
 	}
 
 	bool IsHighRiskClass(const FString& ClassName)
@@ -144,6 +166,7 @@ FPlutoAssetNamingAuditResult PlutoAssetNamingRules::Audit(const FAssetData& Asse
 	const FString AssetName = AssetData.AssetName.ToString();
 	const FString PackageName = AssetData.PackageName.ToString();
 	const FString ClassName = AssetData.AssetClassPath.GetAssetName().ToString();
+	const bool bIsDeveloperSandbox = PackageName.StartsWith(TEXT("/Game/Developers/"), ESearchCase::IgnoreCase);
 
 	if (ClassName == TEXT("ObjectRedirector"))
 	{
@@ -153,7 +176,9 @@ FPlutoAssetNamingAuditResult PlutoAssetNamingRules::Audit(const FAssetData& Asse
 		return Result;
 	}
 
-	if (!IsAsciiAssetPath(PackageName) || !IsValidAssetName(AssetName))
+	// A Developers user folder can inherit a non-ASCII operating-system account name.
+	// Continue auditing its assets, but do not report the sandbox path itself.
+	if ((!bIsDeveloperSandbox && !IsAsciiAssetPath(PackageName)) || !IsValidAssetName(AssetName))
 	{
 		Result.Status = EPlutoAssetNamingStatus::SuggestedMigration;
 		Result.Issue = TEXT("名称或路径含有中文、空格或其他不兼容字符");

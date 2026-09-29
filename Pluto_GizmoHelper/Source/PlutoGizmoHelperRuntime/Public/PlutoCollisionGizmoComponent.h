@@ -5,7 +5,7 @@
 #include "PlutoCollisionGizmoTypes.h"
 #include "PlutoCollisionGizmoComponent.generated.h"
 
-class UShapeComponent;
+class UPrimitiveComponent;
 
 UCLASS(ClassGroup = (Pluto), BlueprintType, Blueprintable, meta = (BlueprintSpawnableComponent, DisplayName = "Pluto Collision Gizmo"))
 class PLUTOGIZMOHELPERRUNTIME_API UPlutoCollisionGizmoComponent : public UPrimitiveComponent
@@ -15,7 +15,7 @@ class PLUTOGIZMOHELPERRUNTIME_API UPlutoCollisionGizmoComponent : public UPrimit
 public:
 	UPlutoCollisionGizmoComponent();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pluto Gizmo|Target", meta = (UseComponentPicker, AllowedClasses = "/Script/Engine.BoxComponent,/Script/Engine.SphereComponent,/Script/Engine.CapsuleComponent"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pluto Gizmo|Target", meta = (UseComponentPicker, AllowedClasses = "/Script/Engine.BoxComponent,/Script/Engine.SphereComponent,/Script/Engine.CapsuleComponent,/Script/Engine.BrushComponent", ToolTip = "要可视化的同 Actor 碰撞组件。支持 Box、Sphere、Capsule 和 Brush。"))
 	FComponentReference TargetCollision;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pluto Gizmo")
@@ -31,10 +31,10 @@ public:
 	FPlutoCollisionGizmoStyle OverrideStyle;
 
 	UFUNCTION(BlueprintCallable, Category = "Pluto Gizmo")
-	void SetTargetCollision(UShapeComponent* InTargetCollision);
+	void SetTargetCollision(UPrimitiveComponent* InTargetCollision);
 
 	UFUNCTION(BlueprintPure, Category = "Pluto Gizmo")
-	UShapeComponent* GetTargetCollision() const;
+	UPrimitiveComponent* GetTargetCollision() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Pluto Gizmo")
 	void SetGizmoEnabled(bool bEnabled);
@@ -66,7 +66,7 @@ public:
 	FPlutoCollisionGizmoStyle GetResolvedStyle() const;
 	bool IsTargetValid() const;
 	FName GetTargetComponentName() const { return TargetCollision.ComponentProperty; }
-	void SetTargetCollisionReference(UShapeComponent* InTargetCollision, FName ComponentPropertyName);
+	void SetTargetCollisionReference(UPrimitiveComponent* InTargetCollision, FName ComponentPropertyName);
 
 	virtual FPrimitiveSceneProxy* CreateSceneProxy() override;
 	virtual FBoxSphereBounds CalcBounds(const FTransform& LocalToWorld) const override;
@@ -81,6 +81,7 @@ public:
 private:
 	uint32 BuildTargetSignature() const;
 	void ApplyStyleMutation(TFunctionRef<void(FPlutoCollisionGizmoStyle&)> Mutation);
+	static bool IsSupportedTarget(const UPrimitiveComponent* Component);
 
 	uint32 LastTargetSignature = 0;
 	FPlutoCollisionGizmoStyle LastResolvedStyle;

@@ -1,9 +1,25 @@
 #include "PlutoMathFunctionLibrary.h"
 
+#include "Kismet/KismetMathLibrary.h"
+
 #include <cmath>
 
 namespace
 {
+	bool IsFinitePlanarInput(const FVector& Value)
+	{
+		return FMath::IsFinite(Value.X) && FMath::IsFinite(Value.Y)
+			&& FMath::IsFinite(Value.X * Value.X + Value.Y * Value.Y);
+	}
+
+	FVector NormalizePlanarDirection(const FVector& Value, float ToleranceSquared)
+	{
+		// GetSafeNormal2D fast-paths unit vectors before checking tolerance.
+		// Apply the public squared-threshold contract for tolerances above 1 too.
+		return Value.SizeSquared2D() < ToleranceSquared
+			? FVector::ZeroVector : Value.GetSafeNormal2D(ToleranceSquared);
+	}
+
 	// Scale before normalizing so direction is independent of the vector's magnitude,
 	// including very small inputs and inputs whose unscaled squared length would overflow.
 	FVector NormalizeFiniteDirection(const FVector& Vector)
@@ -16,6 +32,41 @@ namespace
 		const FVector Scaled(Vector.X / LargestComponent, Vector.Y / LargestComponent, Vector.Z / LargestComponent);
 		return Scaled.GetSafeNormal();
 	}
+}
+
+void UPlutoMathFunctionLibrary::PF_ComputePlanarPolarCoordinates(
+	const FVector& Offset, const FVector& ReferenceDirection, double& Radius, float& AngleDegrees,
+	float NormalizationToleranceSquared)
+{
+	const FVector InputOffset = Offset;
+	const FVector InputReference = ReferenceDirection;
+	Radius = 0.0;
+	AngleDegrees = 0.0;
+	if (!IsFinitePlanarInput(InputOffset) || !IsFinitePlanarInput(InputReference)
+		|| !FMath::IsFinite(NormalizationToleranceSquared) || NormalizationToleranceSquared <= 0.0f)
+	{
+		return;
+	}
+
+	Radius = InputOffset.Size2D();
+	// Preserve the engine's normalization and signed yaw boundary conventions.
+	const FRotator OffsetRotation = UKismetMathLibrary::MakeRotFromX(NormalizePlanarDirection(InputOffset, NormalizationToleranceSquared));
+	const FRotator ReferenceRotation = UKismetMathLibrary::MakeRotFromX(NormalizePlanarDirection(InputReference, NormalizationToleranceSquared));
+	// Match BreakRotator's float angle pin as well as RotateAngleAxis's input.
+	AngleDegrees = static_cast<float>(UKismetMathLibrary::NormalizedDeltaRotator(OffsetRotation, ReferenceRotation).Yaw);
+}
+
+FVector UPlutoMathFunctionLibrary::PF_ComputePlanarOffset(
+	const FVector& ReferenceDirection, float AngleDegrees, double Radius, float NormalizationToleranceSquared)
+{
+	if (!IsFinitePlanarInput(ReferenceDirection) || !FMath::IsFinite(AngleDegrees) || !FMath::IsFinite(Radius)
+		|| !FMath::IsFinite(NormalizationToleranceSquared) || NormalizationToleranceSquared <= 0.0f)
+	{
+		return FVector::ZeroVector;
+	}
+	const FVector Direction = NormalizePlanarDirection(ReferenceDirection, NormalizationToleranceSquared);
+	const FVector Result = UKismetMathLibrary::RotateAngleAxis(Direction, AngleDegrees, FVector::UpVector) * Radius;
+	return Result.ContainsNaN() ? FVector::ZeroVector : Result;
 }
 
 void UPlutoMathFunctionLibrary::PF_DecomposeVector2DWithDeadZone(

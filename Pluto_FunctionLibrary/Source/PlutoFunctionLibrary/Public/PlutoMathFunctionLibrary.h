@@ -12,6 +12,20 @@ class PLUTOFUNCTIONLIBRARY_API UPlutoMathFunctionLibrary : public UBlueprintFunc
 
 public:
 	UFUNCTION(BlueprintPure, Category = "Pluto Function Library|Math",
+		meta = (DisplayName = "PF_ComputePlanarPolarCoordinates", AdvancedDisplay = "NormalizationToleranceSquared",
+			Keywords = "平面 偏移 极坐标 半径 相对 角度 polar radius angle offset",
+			ToolTip = "把 XY 平面偏移换成相对参考方向的角度与半径。\n例如参考方向为 +X、偏移为 (0,100,0)，得到半径 100、角度 +90 度。\n只计算，不读取角色、不选点、不保存结果；世界位置须先减去中心位置。\n@param Offset 从中心指向目标的偏移，与参考方向使用同一坐标空间；只使用 X/Y，忽略 Z。\n半径保留其 XY 原长度；角度计算会按归一化容差过滤极短向量。\n@param ReferenceDirection 角度为 0 的参考方向，不必预先归一化；只使用 X/Y。\n有效方向的长度不影响结果；零向量或低于容差时，以所在坐标空间的 +X 作为角度基准。\n@param Radius 偏移的 XY 长度，单位与 Offset 相同；始终非负，不是三维距离。\n极短偏移仍保留长度，不因方向归零而清除半径。\n@param AngleDegrees 偏移方向相对参考方向的有符号角度，单位度，范围 [-180,180]。\n采用引擎 Break Rotator 的单精度角度语义。\n从 +X 转向 +Y 为正；恰好反向可能为 +180 或 -180，表示同一方向。\n零或低于容差的偏移以所在坐标空间的 +X 计算角度；此时角度没有实际目标朝向含义。\n@param NormalizationToleranceSquared 归一化所用的 XY 长度平方阈值，默认 0.0001；高级参数，必须大于 0。\n平方长度严格小于阈值时方向按零处理；这是平方阈值，不是半径，也不会限制输出半径。\nXY 分量、容差非有限，容差非正或长度平方溢出时，两项输出均为 0。"))
+	static void PF_ComputePlanarPolarCoordinates(const FVector& Offset, const FVector& ReferenceDirection,
+		double& Radius, float& AngleDegrees, float NormalizationToleranceSquared = 0.0001f);
+
+	UFUNCTION(BlueprintPure, Category = "Pluto Function Library|Math",
+		meta = (DisplayName = "PF_ComputePlanarOffset", AdvancedDisplay = "NormalizationToleranceSquared",
+			Keywords = "平面 偏移 极坐标 半径 角度 环绕 polar radius angle offset",
+			ToolTip = "按参考方向、相对角度与半径，计算 XY 平面偏移。\n例如参考方向为 +X、角度 +90 度、半径 100，得到 (0,100,0)。\n只返回偏移，Z 为 0；调用方加上中心位置得到世界位置，自行处理高度、导航与状态写回。\n@param ReferenceDirection 相对角度的零度方向，不必预先归一化；只使用 X/Y，忽略 Z。\n零向量或低于归一化容差时返回零偏移，不擅自选择环绕方向。\n@param AngleDegrees 从参考方向旋转的角度，单位度；从 +X 转向 +Y 为正。\n采用引擎 Rotate Vector Around Axis 的单精度角度语义；允许负角度与超过一圈的角度。\n@param Radius 沿旋转后的单位方向偏移多远，单位由调用方决定。\n0 返回零偏移；负值允许，表示沿相反方向偏移，不自动取绝对值。\n@param NormalizationToleranceSquared 参考方向归一化所用的 XY 长度平方阈值，默认 0.0001；高级参数，必须大于 0。\n平方长度严格小于阈值时返回零偏移；不用于限制 Radius。\n@return XY 平面偏移向量，Z 恒为 0；它还不是世界位置。\nXY 分量、角度、半径、容差非有限，容差非正、参考方向长度平方或结果溢出时返回零偏移。"))
+	static FVector PF_ComputePlanarOffset(const FVector& ReferenceDirection, float AngleDegrees,
+		double Radius, float NormalizationToleranceSquared = 0.0001f);
+
+	UFUNCTION(BlueprintPure, Category = "Pluto Function Library|Math",
 		meta = (DisplayName = "PF_DecomposeVector2DWithDeadZone",
 			Keywords = "二维 向量 分解 方向 长度 强度 径向 死区 手柄 vector direction magnitude radial deadzone",
 			ToolTip = "将二维向量拆成单位方向与强度，并过滤径向死区。\n长度小于或等于死区时，方向和强度都为 0；超过死区时保留原长度，不重映射、不限制到 1。\n适合整理摇杆或合成后的二维意图；只计算，不读取设备、不修改变量，也不需要快照。\n@param InputVector 要分解的二维向量，X/Y 分量须使用同一单位。\n若来自三维向量，请由调用方明确选择平面；本节点不处理 Z。\n@param DeadZone 死区半径，与输入向量长度使用同一单位；边界也归零。\n0 只过滤零向量，负值按 0 处理；这不是分别过滤 X/Y 的轴向死区。\n@param Direction 通过死区时返回长度为 1 的二维方向；否则为零向量。\n方向不包含原强度，需要完整结果时与 Magnitude 相乘。\n@param Magnitude 通过死区时返回输入原长度；否则为 0。\n不会把死区外的强度重映射到 0～1，也不会截断大于 1 的长度。\n输入含 NaN/无穷大、死区非有限，或长度超出双精度可表示范围时，两项输出均为 0。"))

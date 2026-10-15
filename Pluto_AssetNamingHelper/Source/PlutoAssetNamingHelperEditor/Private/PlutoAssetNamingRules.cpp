@@ -44,7 +44,7 @@ namespace
 			TEXT("SKEL"), TEXT("PHYS"), TEXT("EQSC"), TEXT("BTS"), TEXT("BTD"),
 			TEXT("BTT"), TEXT("IMC"), TEXT("PDA"), TEXT("MPC"), TEXT("ABP"),
 			TEXT("WBP"), TEXT("EQS"), TEXT("MI"), TEXT("MF"), TEXT("PM"),
-			TEXT("SM"), TEXT("SK"), TEXT("DT"), TEXT("DA"), TEXT("IA"),
+			TEXT("SM"), TEXT("SK"), TEXT("DT"), TEXT("CT"), TEXT("DA"), TEXT("IA"),
 			TEXT("BT"), TEXT("BB"), TEXT("CR"), TEXT("NS"), TEXT("NE"),
 			TEXT("SL"), TEXT("BP"), TEXT("AM"), TEXT("BS"), TEXT("M"),
 			TEXT("T"), TEXT("A"), TEXT("E"), TEXT("S"), TEXT("L")
@@ -92,6 +92,8 @@ namespace
 		if (ClassName == TEXT("NiagaraSystem")) return TEXT("NS");
 		if (ClassName == TEXT("NiagaraEmitter")) return TEXT("NE");
 		if (ClassName == TEXT("DataTable")) return TEXT("DT");
+		// Use registry metadata so this editor helper does not require Chooser to be enabled.
+		if (AssetData.AssetClassPath == FTopLevelAssetPath(TEXT("/Script/Chooser"), TEXT("ChooserTable"))) return TEXT("CT");
 		if (ClassName == TEXT("PCGGraph")) return TEXT("PCG");
 		if (ClassName == TEXT("PCGGraphInstance")) return TEXT("PCGI");
 		if (ClassName == TEXT("PCGDataAsset")) return TEXT("PCGDA");
@@ -100,7 +102,9 @@ namespace
 		if (ClassName == TEXT("World")) return AssetName.StartsWith(TEXT("SL_")) ? TEXT("SL") : TEXT("L");
 
 		const FString RegisteredPrefix = RecognizeRegisteredPrefix(AssetName);
-		if (!RegisteredPrefix.IsEmpty())
+		// CT is reserved for the exact ChooserTable class above, not a name-based
+		// fallback for CurveTable or other unregistered asset types.
+		if (!RegisteredPrefix.IsEmpty() && RegisteredPrefix != TEXT("CT"))
 		{
 			return RegisteredPrefix;
 		}

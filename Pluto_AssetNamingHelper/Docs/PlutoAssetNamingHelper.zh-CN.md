@@ -61,6 +61,16 @@ Pluto_AssetNamingHelper 用于检查指定内容目录中的 Unreal 资产名称
 - 不使用 `PCGG_`，因为 `PCG_` 已是 Unreal 官方示例采用的 Graph 资产前缀。
 - 建议名称会归一化已有的 `_SOD_` 结构，不会把错误前缀和项目标识反复嵌套到新名称中。
 
+## Chooser Table 资产
+
+- Chooser Table 使用 `CT_SOD_<Name>[_Variant]`，例如 `CT_SOD_GirlReaction`。
+- 按 Asset Registry 中的 `/Script/Chooser.ChooserTable` 类路径识别，不加载资产，也不要求本插件依赖或启用 Chooser。
+- 表的返回类型不改变表名前缀；即使返回 DataAsset，表仍使用 `CT_`，被返回的数据资产使用自己的前缀。
+- 已有 `CT_SOD_*` 可判为符合；误用 `DT_SOD_*` 或 `DA_SOD_*` 的 Chooser Table 会建议改为 `CT_SOD_*`。
+- 缺少 SOD 所有权标识时仍要求先确认来源；扫描不会直接重命名。
+- `CT_` 不作为 Curve Table、Chooser Signature、Proxy Table、Proxy Asset 或其他未知类型的名称推断依据。
+- 命名符合只描述资产名称，不表示实验资产已被纳入正式 Gameplay 实现。
+
 ## 结果列表
 
 - 资产名称：显示资产默认图标和当前名称；悬停可查看包路径。
